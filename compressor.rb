@@ -8,19 +8,6 @@ class Compressor
     @symbols_ruleset = SYMBOLS_RULESET
   end
 
-  # def substitute(ruleset)
-  #   ruleset.each do |rule|
-  #     apply_rule(rule)
-  #   end
-  #   @text
-  # end
-  #
-  # def apply_rule(rule)
-  #   # @text.gsub!(/[^1]#{rule[0]}/, rule[1])
-  #   # @text = @text.split(rule[0]).join(rule[1])
-  #
-  # end
-
   def substitute(ruleset, comp_type)
     symbol_table = Hash[ruleset]  #  { abbr: full_text, ... }
 
@@ -33,12 +20,6 @@ class Compressor
   def compress
     ruleset = @symbols_ruleset + @words_ruleset
 
-    # ruleset.each do |rule|
-    #   @text.gsub!(/(?=[^1])(#{rule[0]})/,rule[1])
-    # end
-    # File.write('output/compressed.txt', @text)
-    # @text
-
     substitute(ruleset, 'compressed')
   end
 
@@ -46,14 +27,6 @@ class Compressor
     reversed_symbols_rules = reverse_rule_order(@symbols_ruleset)
     reversed_words_rules = reverse_rule_order(@words_ruleset)
     swapped_rules = swap_rule_pairs(reversed_symbols_rules + reversed_words_rules)
-
-    # swapped_rules :: [[abbr, full_text]]
-    # symbol_table = Hash[swapped_rules]  #  { abbr: full_text, ... }
-    #
-    # symbol_regexp = Regexp.new("(" + symbol_table.keys.map { |k| Regexp.escape(k) }.join("|") + ")")
-    # @text.gsub(symbol_regexp) { |abbr| symbol_table[abbr] }.tap do |decompressed|
-    #   File.write('output/decompressed.txt', decompressed)
-    # end
 
     substitute(swapped_rules, 'decompressed')
   end
